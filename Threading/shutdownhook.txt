@@ -1,0 +1,20 @@
+shutdown hook is a thread 
+
+we can  registere this  thread with  java runtime environment 
+
+a java application can register a thread with jre using following method of  java.lang.Runtime  class
+          public void addShutdownHook(Thread t); 
+
+same thread get executed when java application terminates
+
+
+To define working of shutdownhook define a class that implements runnable interface directly
+or indirectly.
+
+A shutdown hook is simply an initialized but unstarted thread. When the virtual machine begins its shutdown sequence it will start all registered shutdown hooks in some unspecified order and let them run concurrently.
+
+
+
+
+
+

@@ -1,0 +1,53 @@
+     Threading
+
+       in all application we are thinking in terms of single
+       path of execution.
+
+      means every thing will be carried out one by one step after
+      step.
+
+
+     but upon a time u may feel  that if two parts of our      application run simultaneously then performance will get
+    enhanced.
+
+     (when size of application is big)
+     (big in terms of no. of functionally independent modules
+      present in same applicaiton)
+
+      e.g -- word -- typing + printing
+
+     in terms of an  c# applicaiton program think in following     manner  what if two for() loops starts working together
+
+    for the same c# support multithreading.
+ 
+    Thread is always there in ur application.
+
+    means main() is also as thread which get created automatically
+   when we start our c# application.
+
+   now we will try to create our own thread and start them explicitly.
+
+   lets identify some basic operation of Thread
+        1. create a thread
+        2.  start a thread
+       3.   define working of thread.
+       4. as after getting started thread will going to impart his            working.
+
+      5.  we can suspend / sleep a thread
+
+      6. we can stop a thread.
+
+    for all these operations we get built in function which are
+    collectively present in Thread class
+
+    Thread class is present in   System.Threading namespace.
+
+     
+   
+ 
+
+   
+
+     
+
+    

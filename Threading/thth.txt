@@ -1,0 +1,630 @@
+class Communication
+     {
+      public static void main(String args[]) throws Exception
+          {
+               Producer obj1=new Producer();
+               Consumer   obj2=new Consumer(obj1);
+                Thread t1=new Thread(obj1);
+                Thread t2=new Thread(obj2);
+              t1.start();  t2.start();
+          }
+    }
+class Producer extends Thread
+        {
+            StringBuffer sb;
+            boolean dataprodover=false;
+            Producer()
+             {
+               sb=new StringBuffer();
+             }
+           public void run()
+              {
+                  for(int i=1;i<=10;i++)
+                   {
+                      try
+                           {
+                             sb.append(i+":");
+                            System.out.println("appending");
+                          Thread.sleep(1000);
+                  }catch(Exception e){}
+                  }
+                   dataprodover=true;
+              }
+        }
+      class Consumer extends Thread
+                 {
+                     Producer prod;
+                     Consumer(Producer prod)
+                        {
+                           this.prod=prod;
+                        }
+                    public void run()
+                        {
+                           try
+                               {
+                                //  while( prod.dataprodover==false )
+                                 //       {  System.out.println("checking....checking checking cheking");
+                                 //          Thread.sleep(100);
+                                  //      }
+                               }catch(Exception e){}
+                               System.out.println(prod.sb);
+                          }
+                       }
+
+
+
+
+
+  class Shutdown1 implements Runnable
+      {
+           public void run()
+              {
+                 while(true)
+                  {
+          System.out.println(" m working....");
+          try { Thread.sleep(200); } catch(Exception e){}
+                  }
+              }
+      }
+
+   class DemoShut 
+        {
+             public static void main(String args[])
+                   {
+                      Thread t=new Thread(new Shutdown1() );
+                      t.start();
+                      System.exit(1);
+                      System.out.println(" exiting main ....");
+                   }
+        }class  DemoWork extends Thread
+       {
+          public void run()
+              {
+            System.out.println("m sleeping..." + Thread.currentThread().getPriority() );
+           try{ 
+                  Thread.sleep(5000);
+     System.out.println(" Feeling fresh    :  " + Thread.currentThread().getName() );
+               }  catch(InterruptedException e)
+                      {
+                    System.out.println(" Some body has disturbed me ... ");
+                 //    return;                
+                      }
+                 System.out.println(" hello world hi hi we are still alive");
+              }
+       }
+class DemoThGp
+      {
+        public static void main(String args[])
+           {
+              ThreadGroup tg=new ThreadGroup("My Group...");
+              DemoWork ob=new DemoWork();
+              Thread t1=new Thread(tg,ob);
+              Thread t2=new Thread(tg,ob);
+              Thread t3=new Thread(tg,ob);
+               t1.start(); t2.start(); t3.start();
+           System.out.println(tg.activeCount() );
+               try {   Thread.sleep(1000); }catch(Exception e) {}
+               tg.list();
+               if ( tg.activeCount() > 0)
+                  {
+                    System.out.println("Threads are taking too much time");
+                    tg.interrupt(); // interrupting whole group...
+                  }                              
+           }
+      }
+
+
+
+//  requesting  ...   termination of  Thread using .....   interrupt() ,  interrrupted() and   isInterrupted() methods
+as we know a thread terminated when its run method returns
+ but  in addition to  that we can stop a thread  using   stop method 
+        how ever this method is now depricated . as  stop()  results in some complexity....
+   However to terminate a thread java propose some new  method  i.e   interrupt()
+               interrupt() method can be used to request termination of  thread.
+     public void interrupt()
+           when we call interrupt() method on a thread object then interrupted status  of  same  thread object is set to true
+  Thread Status ??    Note : every thread object implicitly consist of interrupted status flag variable 
+                               same value is of boolean type   and  by default it consist of  false value 
+   after interrupting a  thread  using  interrupt( ) method then we can  check interrupted status of a thread object using
+   following 2 methods
+              1.   interrupted()
+                         public  static boolean interrupted();
+       test wheather the current thread  has been interrupted. 
+       Call of interrupted() has  one  side effect i.e. it  reset the   interrupted   status of the current thread to false if  it is true
+       Note :so it means that second subsequent call of interrupted always return a  false value.
+           2.  isInterrupted()
+                       boolean isInterrupted()
+                        test wheather the current thread  has been interrupted. 
+                        unlike  interrupted() method this method does not change the interrupted  status of   the thread.
+               
+  NOTE :  if we call interrupted() or isInterrupted() method on a thread which is blocked by sleep  then it                always results in  InterruptedException and then thread object will leave the blocked state 
+           
+
+
+
+
+
+
+
+
+     class LazyThread extends Thread
+        {
+          public void run()
+             {
+               System.out.println(" Some has started me !! ");
+               System.out.println(" Don't disturb m , sleeping... ");
+               try
+                  {
+                    Thread.sleep(8000);
+                    System.out.println("  Feeling Fresh ...");
+                  }catch(InterruptedException e)
+                      { System.out.println(" Lazy is disturbed");}
+               }
+         }
+    class Interruptor
+        {
+            public static void main(String args[])
+               {
+                  System.out.println(" Starting a Lazy Thread");
+                  LazyThread th=new LazyThread();
+                  System.out.println(" giving lazy 5 second to complete ");
+                  th.start();
+                  try
+                     { 
+                        th.join(4000);
+                     }catch(Exception e) {}
+                  if( th.isAlive())
+                     {
+         System.out.println(" Lazy is taking too much time to complete...interrupting it");
+         th.interrupt();
+                     }
+               }
+        }      class Clerk extends Thread
+           {  String name; int cycle;
+               public Clerk(String nm,int cycle )
+                   {  name=nm;  this.cycle=cycle; }
+                public void run()  
+                 {
+                    for(int i=1;i<cycle;i++)
+                       {
+                    System.out.println(  "m working " +  name + "   " + i);
+                  try {  Thread.sleep(1000); } catch(Exception e) {}
+                       }
+                 }
+           }     
+      class Manager
+          {
+                public static void main(String args[]) throws Exception
+                  {
+                    Clerk c1=new Clerk("Mohan",5); c1.start();
+                    Clerk c2=new Clerk("Rohan",10);  c2.start();
+                    Clerk c3=new Clerk("Sohan",5);   c3.start();
+                    for(int i=1;i<10;i++)
+                       {
+                           System.out.println(  "m working manager " + i);
+                           Thread.sleep(100);
+                       }
+               c1.join();  c3.join(); 
+                  System.out.println( " M going : manager");                    
+                  }
+         }
+
+class ncomm
+     {
+      public static void main(String args[]) throws Exception
+          {
+               Producer obj1=new Producer();
+               Consumer   obj2=new Consumer(obj1);
+                Thread t1=new Thread(obj1);
+                Thread t2=new Thread(obj2);
+              t2.start();  t1.start();
+          }
+  
+    }
+class Producer extends Thread
+        {
+            StringBuffer sb;
+            Producer()
+             {
+               sb=new StringBuffer();
+             }
+           public void run()
+              {
+                synchronized(sb)
+                 {
+                    for(int i=1;i<=10;i++)
+                       {
+                         try
+                             {
+                               sb.append(i+":");
+                               System.out.println("appending");
+                              Thread.sleep(1000);
+                            }catch(Exception e){}
+                       }
+                  sb.notify();
+              }
+        }
+   }
+      class Consumer extends Thread
+                 {
+                     Producer prod;
+                     Consumer(Producer prod)
+                        {
+                           this.prod=prod;
+                        }
+                    public void run()
+                        {
+              synchronized(prod.sb)
+                 {     
+                              try
+                               {
+                               System.out.println("checkig...");
+                              try{ prod.sb.wait(); } catch(Exception e){}
+                               }catch(Exception e){}
+                               System.out.println(" contents of sb = " + prod.sb);
+                  }
+                      }
+          }
+/*
+  wait()
+     causes a thread to wait until it is notified. This mehtod can only be called from synchronizedmethod
+     when  wait () method executes it break the synchronized block so that object lock is removed
+     
+    Note  : when sleep() is called from the synchronized block at that time object is still under lock
+
+   Generally sleep is used for making a thread to wait for some time
+   where as wait() is used in connection to notify and notifyAll
+
+   notifyAll()
+          ... unblock the threads that called wait() on this object
+          .. can only be called from synchronized block
+
+   notify()
+          .. unblocks one randomly selected thread among the threads that called wait on this object
+        
+*/
+
+  class Share
+     {
+        int x;
+        synchronized void show(String s,int a)
+              {
+                x=a;
+               System.out.print(" Starting(show) " + s + "   " + x);
+               try
+                   {
+                     Thread.sleep(2000);
+                   }catch(Exception e){}
+             System.out.println(" Ending(show) " + s + "   " + x);
+            }
+       void show1(String s,int a)
+              {
+                x=a;
+               System.out.print(" Starting(show1) " + s + "   " + x);
+               try
+                   {
+                     Thread.sleep(2000);
+                   }catch(Exception e){}
+             System.out.println(" Ending(show1) " + s + "   " + x);
+            }
+      }
+   class CustomThread1 extends Thread
+        {
+              Share s;
+              public CustomThread1(Share s,String str)
+                  {
+                       super(str); this.s=s;
+                       start();
+                  }
+              public void run()
+                 {
+                   s.show(Thread.currentThread().getName(),10);
+                   s.show1(Thread.currentThread().getName(),10);
+                    
+                
+         }
+        }
+   class CustomThread2 extends Thread
+        {
+              Share s;
+              public CustomThread2(Share s,String str)
+                  {
+                       super(str); this.s=s;
+                       start();
+                  }
+              public void run()
+                 {
+                   s.show(Thread.currentThread().getName(),20);
+                   s.show1(Thread.currentThread().getName(),20);
+                 }
+        }
+   class CustomThread3 extends Thread
+        {
+              Share s;
+              public CustomThread3(Share s,String str)
+                  {
+                       super(str); this.s=s;
+                       start();
+                  }
+              public void run()
+                 {
+                      s.show(Thread.currentThread().getName(),30);
+                      s.show1(Thread.currentThread().getName(),30);
+
+                 }
+        }
+
+
+   class RunSyn
+         {
+             public static void main(String args[])
+                {
+                   Share st=new Share();
+        CustomThread1 t1=new CustomThread1(st,"one");
+        CustomThread2 t2=new CustomThread2(st,"two");
+        CustomThread3 t3=new CustomThread3(st,"three");
+               }
+         }
+  class Share1
+     {
+       static int x;
+       static synchronized void show(String s,int a)
+              {
+                x=a;
+               System.out.print(" Starting(show) " + s + "   " + x);
+               try
+                   {
+                     Thread.sleep(2000);
+                   }catch(Exception e){}
+             System.out.println(" Ending(show) " + s + "   " + x);
+            }
+      static  synchronized void show1(String s,int a)
+              {
+                x=a;
+               System.out.print(" Starting(show1) " + s + "   " + x);
+               try
+                   {
+                     Thread.sleep(2000);
+                   }catch(Exception e){}
+             System.out.println(" Ending(show1) " + s + "   " + x);
+            }
+      }
+   class CustomThread1 extends Thread
+        {
+              Share1 s;
+              public CustomThread1(Share1 s,String str)
+                  {
+                       super(str); this.s=s;
+                       start();
+                  }
+              public void run()
+                 {
+                   s.show(Thread.currentThread().getName(),10);
+                   Share1.show(Thread.currentThread().getName(),10);
+                }
+        }
+   class CustomThread2 extends Thread
+        {
+              Share1 s;
+              public CustomThread2(Share1 s,String str)
+                  {
+                       super(str); this.s=s;
+                       start();
+                  }
+              public void run()
+                 {
+                   s.show(Thread.currentThread().getName(),20);
+                   Share1.show(Thread.currentThread().getName(),20);
+                 }
+        }
+   class CustomThread3 extends Thread
+        {
+              Share1 s;
+              public CustomThread3(Share1 s,String str)
+                  {
+                       super(str); this.s=s;
+                       start();
+                  }
+              public void run()
+                 {
+                      s.show(Thread.currentThread().getName(),30);
+                      Share1.show(Thread.currentThread().getName(),30);
+
+                 }
+        }
+
+
+   class RunSyn1
+         {
+             public static void main(String args[])
+                {
+                   Share1 st=new Share1();
+        CustomThread1 t1=new CustomThread1(st,"one");
+        CustomThread2 t2=new CustomThread2(st,"two");
+        CustomThread3 t3=new CustomThread3(st,"three");
+               }
+         }
+   class Share3
+      {
+           int flag =0; int data=0;
+         synchronized  public void submit()
+              {
+                flag=1; 
+               try
+                  {
+                     Thread.sleep(1000);
+                  }catch(Exception e){}
+              data=1;
+             System.out.println("Value submitted ");
+            notify();
+           }
+      synchronized int withDraw()
+             {
+                  if ( flag ==0)
+                     {
+                         try
+                             {
+                                System.out.println(" Wait block");
+                                wait();
+                               }catch(Exception e){}
+                      }
+                   return(data);
+             }
+     }
+       class Thread1 extends Thread
+          {
+                Share3 s;
+                public Thread1(Share3 s, String str)
+                  {
+                     super(str); this.s=s;
+                    start();
+                  }
+             public void run()
+               {
+                  System.out.println(s.withDraw() );
+               }
+         }
+
+       class Thread2 extends Thread
+          {
+                Share3 s;
+                public Thread2(Share3 s, String str)
+                  {
+                     super(str); this.s=s;
+                    start();
+                  }
+             public void run()
+               {
+                  s.withDraw() ;
+               }
+         }
+      class RunSyn2
+           {
+               public static void main(String args[])
+                  {
+                     Share3 st=new Share3();
+                   Thread t2=new Thread2(st,"two");
+                     Thread t1=new Thread1(st,"one");
+                
+                 }
+         }
+    class Tester
+      {
+        public static void main(String args[])
+           {
+         try
+             {
+                System.out.println("Registering shutdown hook...");
+                Runtime r= Runtime.getRuntime();
+                r.addShutdownHook(new Terminator());
+                int a=Integer.parseInt( arr[0]);
+                System.out.println(" Invoking call me ... ");
+                Thread.sleep(5000);
+
+             }
+           }
+      }    class AWork extends Thread
+     {        public void run() 
+                            {
+                                 for(int i=0;i<50;i++)
+                                  {    System.out.println(" form aAWorkd    i =" + i  );  }
+                            }
+     }
+    class BWork extends Thread
+     {        public void run() 
+                            {
+                                 for(int i=0;i<50;i++)
+                                  {    System.out.println(" form a BWork    i =" + i  );  }
+                            }
+     }
+    class CWork extends Thread
+     {        public void run() 
+                            {
+                                 for(int i=0;i<50;i++)
+                                  {    System.out.println(" form a  CWork    i =" + i  );  }
+                            }
+     }
+     class  User
+                 {  
+                public static void main(String args[])
+                  {
+                    while(true)
+                      {
+                        new Thread( new AWork() ).start();
+                     }
+
+             }
+
+  }
+
+
+
+
+
+      class Shared
+          {
+                int x;
+              Integer y;
+                public int square(int a)
+                  {
+                     x=a;
+                         this.y=a;
+                synchronized(this.y)
+                    {
+                     try {  Thread.sleep(1000); } catch(Exception e) {}
+                  System.out.println(" value of x = " + x);
+                  System.out.println(" value of y= " + y);
+                  }
+                        return( y*y );
+                    
+                  }
+         }
+      class MyThread extends Thread
+           {
+               Shared s; int value;
+               public MyThread( Shared s,int value)
+                   { this.s=s;  this.value=value;}
+                public void run() 
+                 {
+                    System.out.println(   s.square(value)  );
+                 }
+           }     
+      class User1
+          {
+                public static void main(String args[])
+                  {
+                       Shared s=new Shared();
+                         MyThread t1=new MyThread(s,10);  t1.start();
+                         MyThread t2=new MyThread(s,20);  t2.start();
+                         MyThread t3=new MyThread(s,15);  t3.start();
+                  }
+         }
+
+                                                           Thread Synchronization
+When two or more threads need access to a shared resource, and if  they need some way to
+ensure that resource will be used by only one thread at a time. then we can use concept  of  synchronization
+
+  synchronized keyword 
+          we can apply it either on java class method
+          or we can apply it over the java class object
+
+    if we apply it over a  java class method then same
+   e.g   public synchronized void  printing(String msg)
+                  {
+                      .....
+                  }
+         a synchronized method is useful between n number of    threads...
+
+         if  we wants to execute a java class method in non threaded manner between n number
+         of  threads then   a   synchorninzed method helps us a lot.
+
+      or  if  we  wants to  invoke n number of  non synchronized  methods over a class object in synchronzed manner
+    then we have to use  synchronized keyword with class object  in following manner
+
+                  synchronized(<ref.ofclassobject>)      
+                      {                                                           
+                         ..  from here invoke class methods
+                     }                                                           
+      concept of  synchronization is related to concept of   acquiring lock on a resource.
+      to  use a synchronized  resource a thread need to acquire   lock on the same resource.
+      */

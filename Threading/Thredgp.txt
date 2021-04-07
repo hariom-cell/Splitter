@@ -1,0 +1,111 @@
+   ThreadGroup  tg1=new ThreadGroup("tg111")
+   ThreadGroup  tg2=new ThreadGroup( tg1,"tggg2");
+        
+            Thread  t1= new Thread( new Dispatch() ,  tg );
+    Thread  t2= new Thread( new Dispatch() ,  tg1 );
+    Thread  t3= new Thread( new Dispatch() ,  tg1 );
+    Thread  t4= new Thread( new Dispatch() ,  tg );
+
+Thread Group
+A thread group represents several threads as a single group.
+The main advantage of taking several threads as a group is that by using a single method,
+we will be able to controll all the thread in a group.
+
+To create a thread group, we should simple create an object to ThreadGroup class
+    ThreadGroup tg=new ThreadGroup("groupname");
+     here tg is the thread group object and "groupname" is its name
+
+     To add a thread to this group (tg)
+   Thread t1=new Thread(tg,targetobj);
+   here t1 thread is created and added to the thread group tg.
+   
+   This thread acts on targetobj 
+      ( whose run method we want to adopt for the working of thread)
+
+   Thread t1=new Thread(tg,targetobject,"threadname");
+     ... here threadname represent name of the thread t1 with in the group
+  
+   In addition, a thread group we can also include other thread groups.
+   Then  thread groups form a tree in which every thread group except the 
+   initial thread group has a parent. 
+
+   A thread is allowed to access information about its own thread group,
+   but not to access information  about its thread group's parent thread group
+   or any other thread groups.
+
+
+
+
+
+
+   Daemon Thread :
+         Daemon Thread is a special kind thread that has following characteristics
+    1. It need non daemon threads for its existance, that is if at any point of time during the execution
+        of our application if only daemon thread remain as active thread then JRE oppose the
+        daemon thread and terminates.
+
+    2. Daemon thread does not compete for resources with non daemon thread that is if 
+        it got a chance to execute only if all non daemon thread sunpended.
+        
+
+    3. Daemon Threads are used to implements optional services, garbage collection in java is
+        executed by the JRE as a Daemon thread.
+
+       each thread has a flag name daemon that is set to make a thread daemon.
+
+       setDaemon()
+             method of thread class is used to make a thread daemon.
+
+        public void setDaemon(boolean deamon);
+          Thread t=new Thread();  
+        t.setDaemon(true);
+        t.start();
+       Note : Daemon flag must be set before starting the thread.
+
+       isDaemon() : is used to obtain the current value of Daemon  flag.
+
+       public boolean isDaemon();
+
+   Daemon thread generally runs in background // they can be thinked as helper thread
+
+
+
+
+
+ .... Deadlock  
+            a dead lock is a situation where a thread is waiting for an object lock,
+            that another thread holds.
+
+           since each thread is waiting for the other thread to release the lock
+          means both remains waiting for each other forever....
+        
+          and they remain sit in blocked pool such kind of situation 
+          results in dead lock.
+
+
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+

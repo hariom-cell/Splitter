@@ -1,0 +1,70 @@
+
+
+ Multitasking :
+  ability of  operating system to executed more then one task simultaneously is known as multitasking.
+
+   all modern  o/s  supports concept of multitasking.
+             e.g   lynix /  window / apple mac  etc.
+             e.g  we can run n number of sessions of   internet explr concurrently or can play winamp or                    printing on cncurnt basis
+
+     using  concept of  multitasking  we can exploit cpu time in more efficient manner.
+     multitasking can be thinked as one of the feature of  o/s  .
+
+     o/s  achv  multitasking by using concept of  time slicing....  
+        i.e using single processor   o/s  manage execution of  n number of  task simultaneously.
+
+      Multitasking  is again can be of  2 types : 
+                          Process based multitasking       Thread based      multitasking.
+       in case of  Process based multitasking  o/s will manage execution of  each process in seperate - 2        address space
+       
+        where as in case of  Thread based multitasking  o/s can   manage multiple task with in single         address space
+
+         process based multitasking best suitable when 2 process do not need  resource sharing
+         where as if  each process need data of  each other then such kind of  communication of data                  results in  speed degradation.   to resolve above prob o/s  purpose  Thread based multitasking.
+
+          e.g  of Process based multitasking are  execution of   winamp +  intrnt explr +  mspaint
+          Thread based  multitasking   are   execution of   multiple threads running with in Word application     
+                                                                                                     spell chkr  +  word printing + word typing.
+           now   with in a java application  we try to implmtn  Thread based multitasking.   MultiThreading  or 
+           Multithreaded  programming.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+               
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
